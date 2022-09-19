@@ -17,7 +17,8 @@ namespace Notes.Application.Notes.Commands.DeleteNote
             var note = 
                 await _dbContext.Notes.FindAsync(new object[] { request.Id }, cancellationToken);
 
-            if (note == null) throw new NotFoundException(nameof(Note), request.Id);
+            if (note == null || note.UserId != request.UserId)
+                throw new NotFoundException(nameof(Note), request.Id);
             _dbContext.Notes.Remove(note);
             await _dbContext.SaveChangesAsync(cancellationToken);
             return Unit.Value;
