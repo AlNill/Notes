@@ -8,12 +8,12 @@ using Notes.Domain;
 
 namespace Notes.Application.Notes.Queries.GetNoteDetails
 {
-    public class GetNotedetailsQueryHandler : IRequestHandler<GetNoteDetailsQuery, NoteDetailsVm>
+    public class GetNoteDetailsQueryHandler : IRequestHandler<GetNoteDetailsQuery, NoteDetailsVm>
     {
         private readonly INotesDbContext _dbContext;
         private readonly IMapper _mapper;
 
-        public GetNotedetailsQueryHandler(INotesDbContext dbContext, IMapper mapper) =>
+        public GetNoteDetailsQueryHandler(INotesDbContext dbContext, IMapper mapper) =>
             (_dbContext, _mapper) = (dbContext, mapper);
 
         public async Task<NoteDetailsVm> Handle(
