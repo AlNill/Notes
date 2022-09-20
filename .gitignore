@@ -362,3 +362,5 @@ MigrationBackup/
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
 /Notes.WebApi/notesdb.db
+/Notes.WebApi/notesdb.db-shm
+/Notes.WebApi/notesdb.db-wal
