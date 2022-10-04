@@ -4,6 +4,9 @@ using Notes.Application.Common.Mappings;
 using Notes.Application.Interfaces;
 using Notes.Persistence;
 using Notes.WebApi.Middleware;
+using Notes.WebApi.Services;
+using Serilog;
+using Serilog.Events;
 using System.Reflection;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -48,6 +51,17 @@ builderServices.AddSwaggerGen(config =>
     var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
     config.IncludeXmlComments(xmlPath);
 });
+builderServices.AddSingleton<ICurrentUserService, CurrentUserService>();
+builderServices.AddHttpContextAccessor();
+
+Log.Logger = new LoggerConfiguration()
+    .MinimumLevel.Override("Microsoft", LogEventLevel.Information)
+    .WriteTo.File("NotesWebAppLog-.txt", rollingInterval:
+        RollingInterval.Day)
+    .CreateLogger();
+
+builder.Logging.ClearProviders();
+builder.Logging.AddSerilog(Log.Logger);
 
 var app = builder.Build();
 var services = app.Services;
@@ -62,7 +76,7 @@ using (var scope = services.CreateScope())
     }
     catch (Exception ex)
     {
-
+        Log.Fatal(ex, "An error occurred while app initialization");
     }
 }
 
